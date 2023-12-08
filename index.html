@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Disentangled Clothed Avatar Generation from Text Descriptions</title>
+  <!-- Bootstrap -->
+  <link href="css/bootstrap-4.4.1.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,800italic,400,700,800' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/project.css" media="screen" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/iconize.css" />
+    <script src="js/google-code-prettify/prettify.js"></script> -->
+</head>
+
+<!-- cover -->
+<section>
+  <div class="jumbotron text-center mt-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h2>Disentangled Clothed Avatar Generation from Text Descriptions
+          </h2>
+          <h4 style="color:#5a6268;">Arxiv 2023 </h4>
+          <hr>
+          <h6>
+            <a href="https://shanemankiw.github.io/" target="_blank">Jionghao Wang</a><sup>1</sup>,
+            <a href="https://liuyuan-pal.github.io/" target="_blank">Yuan Liu</a><sup>2</sup>,
+            <a href="https://frank-zy-dou.github.io/" target="_blank">Zhiyang Dou</a><sup>2</sup>,
+            <a href="https://yzmblog.github.io/" target="_blank">Zhengming Yu</a><sup>3</sup>,
+            <a href="https://lyq.me/scholar" target="_blank">Yongqing Liang</a><sup>3</sup>, <br>
+            <a href="https://people.tamu.edu/~xinli/" target="_blank">Xin Li</a><sup>3</sup>,
+            <a href="https://engineering.tamu.edu/cse/profiles/Wang-Wenping.html" target="_blank">Wenping
+              Wang</a><sup>3</sup>,
+            <a href="https://medialab.sjtu.edu.cn/" target="_blank">Rong Xie</a><sup>1</sup>,
+            <a href="https://medialab.sjtu.edu.cn/author/li-song/" target="_blank">Li Song</a><sup>1</sup>
+          </h6>
+          <p>
+            <sup>1</sup>Shanghai Jiao Tong University &nbsp;&nbsp;
+            <sup>2</sup>The University of Hong Kong&nbsp;&nbsp;&nbsp;&nbsp;
+            <sup>3</sup>Texas A&M University
+          </p>
+
+          <div class="row justify-content-center">
+            <div class="column">
+              <p class="mb-5"><a class="btn btn-large btn-light" href="" role="button" target="_blank">
+                  <i class="fa fa-file"></i> Paper (Arxiv)</a> </p>
+            </div>
+            <div class="column">
+              <p class="mb-5"><a class="btn btn-large btn-light" href="https://github.com/shanemankiw/so-smpl"
+                  role="button" target="_blank">
+                  <i class="fa fa-github-alt"></i> Code</a> </p>
+            </div>
+            <!-- <div class="column">
+                  <p class="mb-5"><a class="btn btn-large btn-light" href="https://connecthkuhk-my.sharepoint.com/:f:/g/personal/yuanly_connect_hku_hk/EjYHbCBnV-VPjBqNHdNulIABq9sYAEpSz4NPLDI72a85vw" role="button"  target="_blank">
+                    <i class="fa fa-database"></i> Model </a> </p>
+              </div> 
+              <div class="column">
+                  <p class="mb-5"><a class="btn btn-large btn-light" href="https://huggingface.co/spaces/liuyuan-pal/SyncDreamer" role="button"  target="_blank">
+                    <i class="fa fa-desktop"></i> Live Demo </a> </p>
+              </div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- abstract -->
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h3>Abstract</h3>
+
+        <hr style="margin-top:0px">
+        <h6 style="color:#8899a5"> Our method generates high-quality separated human body and clothes meshes from text
+          prompts. Kinematics or simulation
+          motions can drive the disentangled avatar representations to achieve photorealistic animations. </h6>
+
+        <img class="thumbnail" src="figs/teaser.png" style="width:100%; margin-bottom:20px">
+
+        <br>
+
+        <p class="text-left">
+          In this paper, we introduced a novel text-to-avatar generation method that separately generates the human body
+          and the clothes and allows high-quality animation on the generated avatar. While recent advancements in
+          text-to-avatar generation have yielded diverse human avatars from text prompts, these methods typically
+          combine all elements-clothes, hair, and body-into a single 3D representation. Such an entangled approach poses
+          challenges for downstream tasks like editing or animation. To overcome these limitations, we propose a novel
+          disentangled 3D avatar representation named Sequentially Offset-SMPL (SO-SMPL), building upon the SMPL model.
+          SO-SMPL represents the human body and clothes with two separate meshes, but associates them with offsets to
+          ensure the physical alignment between the body and the clothes. Then, we design an Score Distillation
+          Sampling(SDS)-based distillation framework to generate the proposed SO-SMPL representation from text prompts.
+          In comparison with existing text-to-avatar methods, our approach not only achieves higher exture and geometry
+          quality and better semantic alignment with text prompts, but also significantly improves the visual quality of
+          character animation, virtual try-on, and avatar editing.
+        </p>
+
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+<br>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Character Animations</h2>
+        <hr style="margin-top:0px">
+        <!-- <video width="80%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+          <source src="video/gso.mp4" type="video/mp4">
+        </video> -->
+        <div class="video-container" style="display: flex; justify-content: space-around;">
+
+          <!-- First video and its content -->
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/male-white-cart.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">a <span style="color: blue;">white teenage boy</span> wearing <br> <span
+                style="color: purple;">Christmas sweater</span> and <span style="color: orangered;">denim
+                jeans</span></p>
+          </div>
+
+          <!-- Second video and its content -->
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/male-hispanic-long.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">a <span style="color: blue;">Hispanic man</span> wearing <br> <span
+                style="color: purple;">black sports jersey</span> and <span style="color: orangered;">blue track pants</span></p>
+          </div>
+
+        </div>
+        <div class="video-container" style="display: flex; justify-content: space-around;">
+
+          <!-- First video and its content -->
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/male-old-kick.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">a <span style="color: blue;">chubby bald old man</span> wearing <br> <span
+                style="color: purple;">denim work shirt</span> and <span style="color: orangered;">dirty washed jeans</span></p>
+          </div>
+
+          <!-- Second video and its content -->
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/male-black-long.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">an <span style="color: blue;">African-American man </span> wearing <br> <span
+                style="color: purple;">textured white cable-knit sweater</span> and <span style="color: orangered;">tan chinos</span></p>
+          </div>
+
+        </div>
+        <div class="video-container" style="display: flex; justify-content: space-around;">
+
+          <!-- First video and its content -->
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/female-old-long.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">a <span style="color: blue;">old lady</span> wearing <br> <span
+                style="color: purple;">long lilac cardigan</span> and <span style="color: orangered;">taupe shorts</span></p>
+          </div>
+
+          <!-- Second video and its content -->
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/female-white-long-ori.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">a <span style="color: blue;">Caucasian girl with tousled hair</span> wearing <br> <span
+                style="color: purple;">yellow cycling jersey</span> and <span style="color: orangered;">beige yoga pants</span></p>
+          </div>
+
+        </div>
+        <div class="video-container" style="display: flex; justify-content: space-around;">
+
+          <!-- First video and its content -->
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/male-white-longshort.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">a <span style="color: blue;">white teenage boy</span> wearing <br> <span
+                style="color: purple;">red flannel of checker pattern</span> and <span style="color: orangered;">denim shorts</span></p>
+          </div>
+
+          <!-- Second video and its content -->
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/female-black-short.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">an <span style="color: blue;">African-American woman</span> wearing <br> <span
+                style="color: purple;">navy and beige peplum shirt</span> and <span style="color: orangered;">beige yoga pants</span></p>
+          </div>
+
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/female-chinese-short.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">a <span style="color: blue;">Chinese woman with short black hair</span> wearing <br> <span
+                style="color: purple;">jade green blouse with short sleeves</span> and <span style="color: orangered;">olive green shorts</span></p>
+          </div>
+
+          <div>
+            <video width="95%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+              <source src="video/female-hispanic-long.mp4" type="video/mp4">
+            </video>
+            <p class="text-center">a <span style="color: blue;">Hispanic woman with blonde hair</span> wearing <br> <span
+                style="color: purple;">green flannel shirt of checker pattern</span> and <span style="color: orangered;">light blue jeans</span></p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</section>
+<br>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Text to Clothes Generation</h2>
+        <hr style="margin-top:0px">
+        <!-- <img class="thumbnail" src="figs/clothes_gallery.png" style="width:100%; margin-bottom:20px"> -->
+        <video width="100%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+          <source src="video/clothes_gallery_lr.mp4" type="video/mp4">
+        </video>
+        <p class="text-center">
+          Our pipeline enables generating a diverse range of 3D clothes of different colors, materials, and types.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Text to Human Body Generation</h2>
+        <hr style="margin-top:0px">
+        <!-- <img class="thumbnail" src="figs/human_body_gallery.png" style="width:100%; margin-bottom:20px"> -->
+        <video width="100%" playsinline="" autoplay="autoplay" loop="loop" preload="" muted="">
+          <source src="video/avatar_gallery_lr.mp4" type="video/mp4">
+        </video>
+        <p class="text-center">
+          The human body meshes generated by our pipeline are diverse in shapes, haircuts and ethnicities.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Virtual Try-on</h2>
+        <hr style="margin-top:0px">
+        <img class="thumbnail" src="figs/virtual-tryon.png" style="width:100%; margin-bottom:20px">
+
+        <p class="text-center">
+          Our disentangled human-clothes representation inherently allows us to change the outfit of a certain avatar,
+          or put the same clothes on different avatars.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Demo Video</h2>
+        <hr style="margin-top:0px">
+        <div class="container">
+          <center>
+            <iframe width="711" height="400" src="https://www.youtube.com/embed/5uAAccGqnPE"
+              title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen=""></iframe>
+          </center>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+
+
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>Framework</h2>
+        <hr style="margin-top:0px">
+        <img class="thumbnail" src="figs/pipeline.png" style="width:100%; margin-bottom:20px">
+
+        <p class="text-center">
+          Our pipeline has two stages. In Stage I, we generate a base human body model by optimizing its shape parameter
+          and albedo texture. In Stage II, we freeze the human body model and optimize the clothes shape and texture.
+          The rendered RGB images and normal maps of both the clothed human and the clothes are used in computing the
+          SDS losses. For more details, please check out our paper.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+
+<div class="container">
+  <div class="row ">
+    <div class="col-12">
+      <h3>Related Links</h3>
+      <hr style="margin-top:0px">
+      
+      <p class="text-left">
+        Our implementation is heavily based on the amazing <a href="https://github.com/threestudio-project/threestudio" target="_blank">threestudio</a>, shout out to the contributors!
+      </p>
+      <p class="text-left">
+        We'd like to thank the authors of <a href="https://tada.is.tue.mpg.de/" target="_blank">TADA</a>, 
+        <a href="https://idea-research.github.io/DreamWaltz/" target="_blank">DreamWaltz</a>, 
+        <a href="https://hongfz16.github.io/projects/AvatarCLIP.html" target="_blank">AvatarCLIP</a> and 
+        <a href="https://texturepaper.github.io/TEXTurePaper/" target="_blank">TEXTure</a>
+        for making their code public!
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<!-- citing -->
+<div class="container">
+  <div class="row ">
+    <div class="col-12">
+      <h3>Citation</h3>
+      <hr style="margin-top:0px">
+      <pre style="background-color: #e9eeef;padding: 1.25em 1.5em">
+<code>@article{
+}</code>
+              </pre>
+      <hr>
+    </div>
+  </div>
+</div>
+
+<footer class="text-center" style="margin-bottom:10px">
+  Thanks to <a href="https://lioryariv.github.io/" target="_blank">Lior Yariv</a> for the website template.
+</footer>
+
+</body>
+
+</html>
