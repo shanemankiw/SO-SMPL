@@ -10,13 +10,13 @@ Official Implementation of paper "Disentangled Clothed Avatar Generation from Te
 ## Character Animations
 
 <p align="center">
-  <img src="assets/male-white-cart.gif" alt="First GIF" style="width: 40%; margin-right: 10px;"/>
-  <img src="assets/male-black-long.gif" alt="Second GIF" style="width: 40%;"/>
+  <img src="assets/male-white-cart.gif" alt="First GIF" style="width: 30%; margin-right: 2px;"/>
+  <img src="assets/male-black-long.gif" alt="Second GIF" style="width: 30%;"/>
 </p>
 
 <p align="center">
-  <img src="assets/female-old-long.gif" alt="First GIF" style="width: 40%; margin-right: 10px;"/>
-  <img src="assets/male-old-long.gif" alt="Second GIF" style="width: 40%;"/>
+  <img src="assets/female-old-long.gif" alt="First GIF" style="width: 30%; margin-right: 2px;"/>
+  <img src="assets/male-old-long.gif" alt="Second GIF" style="width: 30%;"/>
 </p>
 
 ## Framework
