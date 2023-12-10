@@ -1,7 +1,7 @@
 # SO-SMPL
 Official Implementation of paper "Disentangled Clothed Avatar Generation from Text Descriptions"
 
-![teaser](assets\teaser.png)
+![teaser](.\assets\teaser.png)
 
 **[Project Page](https://shanemankiw.github.io/SO-SMPL)** | **[Paper](https://shanemankiw.github.io/SO-SMPL)**
 
@@ -10,18 +10,18 @@ Official Implementation of paper "Disentangled Clothed Avatar Generation from Te
 ## Character Animations
 
 <p align="center">
-  <img src="assets/male-white-cart.gif" alt="First GIF" style="width: 45%; margin-right: 10px;"/>
-  <img src="assets/male-black-long.gif" width="50%" alt="Second GIF" style="width: 45%;"/>
+  <img src="assets/male-white-cart.gif" alt="First GIF" style="width: 40%; margin-right: 10px;"/>
+  <img src="assets/male-black-long.gif" alt="Second GIF" style="width: 40%;"/>
 </p>
 
 <p align="center">
-  <img src="assets/female-old-long.gif" alt="First GIF" style="width: 45%; margin-right: 10px;"/>
-  <img src="assets/male-old-long.gif" width="50%" alt="Second GIF" style="width: 45%;"/>
+  <img src="assets/female-old-long.gif" alt="First GIF" style="width: 40%; margin-right: 10px;"/>
+  <img src="assets/male-old-long.gif" alt="Second GIF" style="width: 40%;"/>
 </p>
 
 ## Framework
 
-![pipeline](assets\pipeline.png)
+![pipeline](.\assets\pipeline.png)
 
 Our pipeline has two stages. In Stage I, we generate a base human body model by optimizing its shape parameter and albedo texture. In Stage II, we freeze the human body model and optimize the clothes shape and texture. The rendered RGB images and normal maps of both the clothed human and the clothes are used in computing the SDS losses. For more details, please check out our paper.
 
