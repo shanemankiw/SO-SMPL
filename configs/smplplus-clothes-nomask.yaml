@@ -1,0 +1,137 @@
+name: "Stage2-1015-combinations-1"
+tag: "${rmspace:${system.prompt_processor.prompt},_}"
+exp_root_dir: "outputs"
+seed: 2337
+
+data_type: "clothes-semantic-datamodule"
+data:
+  batch_size: 1
+  width: 512
+  height: 512
+  camera_distance_range: [1.25, 2.0]
+  fovy_range: [45, 50]
+  elevation_range: [-10, 45]
+  camera_perturb: 0.
+  center_perturb: 0.
+  up_bias: 0.15
+  up_perturb: 0.
+  eval_camera_distance: 1.5
+  eval_fovy_deg: 45.
+
+system_type: "smpl-clothes-system"
+system:
+  stage: coarse
+  geometry_convert_from: outputs/Stage1/male_whiteteen_box@20230918-183706/ckpts/last.ckpt
+  clothes_geometry_convert_from: outputs/Stage1/male_whiteteen_box@20230918-183706/ckpts/last.ckpt
+  geometry_type: "smpl-plus"
+  geometry:
+    radius: 1.0
+    model_type: "smplx"
+    gender: "male"
+    fix_geometry: false
+    fix_pose: false
+
+  geometry_clothes_type: "smpl-plus-clothes"
+  geometry_clothes:
+    radius: 1.0
+    clothes_type: "overall"
+    gender: "male"
+
+  material_type: "no-material"
+  material:
+    n_output_dims: 3
+    color_activation: sigmoid
+
+  material_clothes_type: "diffuse-with-point-light-material" # unused
+  material_clothes:
+    ambient_only_steps: 0
+    soft_shading: true
+  # material_clothes_type: "no-material"
+  # material_clothes:
+  #   n_output_dims: 3
+  #   color_activation: sigmoid
+
+  exporter_type: "mesh-exporter-clothes"
+
+  background_type: "neural-environment-map-background"
+  background:
+    color_activation: sigmoid
+    random_aug: true
+
+  renderer_type: "nvdiff-rasterizer"
+  renderer:
+    context_type: cuda
+
+  renderer_clothes_type: "nvdiff-rasterizer-smplclothes"
+  renderer_clothes:
+    context_type: cuda
+
+  prompt_processor_type: "stable-diffusion-prompt-processor-clothes"
+  prompt_processor:
+    pretrained_model_name_or_path: "stabilityai/stable-diffusion-2-1-base"
+    prompt: ???
+    prompt_clothes: ???
+    negative_prompt_clothes: "human skin, human body, shoulders, neck, legs, arms, hands,"
+
+  guidance_type: "controlnet-sd-guidance"
+  guidance:
+    pretrained_model_name_or_path: "stabilityai/stable-diffusion-2-1-base"
+    pretrained_model_name_or_path_control: "runwayml/stable-diffusion-v1-5"
+    guidance_scale: 100.
+    min_step_percent: 0.02
+    max_step_percent: 0.98
+    weighting_strategy: sds
+    max_step_percent_annealed: 0.5
+    anneal_start_step: 5000
+
+  loggers:
+    wandb:
+      enable: false
+      project: "threestudio"
+
+  loss:
+    lambda_vsd: 1.
+    lambda_sds: 1.
+    lambda_lora: 1.
+    lambda_orient: 0.
+    lambda_sparsity: 10.
+    lambda_normal_consistency: [5000, 50000., 80000.0, 10000]
+    lambda_laplacian_smoothness: [5000, 50000., 80000.0, 10000]
+    lambda_opaque: [10000, 0.0, 1000.0, 10001] #[10000, 0.0, 1000.0, 10001]
+    lambda_z_variance: 0.
+    lambda_sdf: 1.0
+    lambda_disp_reg: 0.0
+    lambda_canny: 0.0
+    lambda_albedo_smooth: 1000.0 # make albedo smooth again
+    lambda_normal_only: 1.
+  optimizer:
+    name: AdamW
+    args:
+      betas: [0.9, 0.99]
+      eps: 1.e-15
+    params:
+      geometry.clothes_displacement:
+        lr: 0.0002 # 0.001
+      geometry.clothes_mask:
+        lr: 0.0 #0.001
+      geometry.encoding:
+        lr: 0.01 # 0.01
+      geometry.feature_network:
+        lr: 0.001 # 0.001
+      background:
+        lr: 0.0
+      guidance: # for lora. deprecated
+        lr: 0.0
+
+trainer:
+  max_steps: 15000
+  log_every_n_steps: 1
+  num_sanity_val_steps: 1 # add sanity check in first step
+  val_check_interval: 200
+  enable_progress_bar: true
+  precision: 32
+
+checkpoint:
+  save_last: true
+  save_top_k: -1
+  every_n_train_steps: ${trainer.max_steps}

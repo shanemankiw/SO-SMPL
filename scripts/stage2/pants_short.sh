@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# Combination 1: upper-long + pants-long
+exp_root_dir="outputs"
+folder_name="Stage2"
+
+prompts_pants=(
+    "a beautiful Chinese mature woman in olive green knee-length shorts, highly detailed, 8k resolution"
+)
+
+clothes_prompts_pants=(
+    "olive green knee-length shorts, wrinkle-less smooth and flat, marvelous designer clothes asset"
+)
+
+tags_pants=(
+    "female-chinese-pants-short-olive-shorts"
+)
+
+
+base_humans=(
+    "outputs/Stage1/female_chinese/ckpts/last.ckpt"
+)
+
+genders=(
+    "female"
+)
+
+# Validation Checks
+if [ ${#clothes_prompts_pants[@]} -ne ${#tags_pants[@]} ]; then
+    echo "Error: Number of upper_prompts does not match the number of tags_upper."
+    exit 1
+fi
+
+# Loop through each clothes_prompt and run the command
+for i in "${!clothes_prompts_pants[@]}"; do
+    (
+    python3 launch.py --config configs/smplplus-clothes.yaml --train \
+        --gpu 0 \
+        seed=2337 \
+        name="${folder_name}" \
+        exp_root_dir="${exp_root_dir}" \
+        tag="${tags_pants[$i]}_cfg12.5_alb10k_norm8k_lap8k" \
+        use_timestamp=false \
+        data.batch_size=1 \
+        data.up_bias=-0.05 \
+        system.guidance.guidance_scale=12.5 \
+        system.loss.lambda_albedo_smooth=10000.0 \
+        system.loss.lambda_normal_consistency=8000.0 \
+        system.loss.lambda_laplacian_smoothness=8000.0 \
+        system.geometry_clothes.clothes_type="pants-long" \
+        system.geometry_convert_from="${base_humans[$i]}" \
+        system.clothes_geometry_convert_from="${base_humans[$i]}" \
+        system.geometry.gender="${genders[$i]}" \
+        system.geometry_clothes.gender="${genders[$i]}" \
+        system.geometry_clothes.pose_type="a-pose" \
+        trainer.max_steps=12000 \
+        system.prompt_processor.prompt="${prompts_pants[$i]}" \
+        system.prompt_processor.negative_prompt="topless, ugly" \
+        system.prompt_processor.prompt_clothes="${clothes_prompts_pants[$i]}" \
+        system.prompt_processor.negative_prompt_clothes="human skin, human body, knees, wrinkles, wrinkled, ruffled, shadows, reflections"
+    )
+
+    (
+    python3 launch.py --config configs/smplplus-clothes.yaml --export \
+        --gpu 2 \
+        name="${folder_name}" \
+        exp_root_dir="${exp_root_dir}" \
+        seed=2337 \
+        resume="${exp_root_dir}/${folder_name}/${tags_pants[$i]}_cfg12.5_alb10k_norm8k_lap8k/ckpts/last.ckpt" \
+        system.exporter_type="mesh-exporter-clothes" \
+        tag="${tags_pants[$i]}_exportmesh" \
+        use_timestamp=false \
+        data.batch_size=1 \
+        data.up_bias=-0.05 \
+        system.guidance.guidance_scale=25.0 \
+        system.loss.lambda_albedo_smooth=500.0 \
+        system.loss.lambda_normal_consistency=8000.0 \
+        system.loss.lambda_laplacian_smoothness=8000.0 \
+        system.geometry_clothes.clothes_type="pants-long" \
+        system.geometry_convert_from="${base_humans[$i]}" \
+        system.clothes_geometry_convert_from="${base_humans[$i]}" \
+        system.geometry.gender="${genders[$i]}" \
+        system.geometry_clothes.gender="${genders[$i]}" \
+        system.geometry_clothes.pose_type="a-pose" \
+        trainer.max_steps=15000 \
+        system.prompt_processor.prompt="${prompts_pants[$i]}" \
+        system.prompt_processor.negative_prompt="topless, ugly" \
+        system.prompt_processor.prompt_clothes="${clothes_prompts_pants[$i]}" \
+        system.prompt_processor.negative_prompt_clothes="human skin, human body, knees, wrinkles, wrinkled, ruffled, shadows, reflections"
+    )
+done
