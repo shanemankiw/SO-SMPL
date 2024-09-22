@@ -32,9 +32,9 @@ Our pipeline has two stages. In Stage I, we generate a base human body model by 
 2. Besides, you need to also download [SMPL-X](https://smpl-x.is.tue.mpg.de/). If you have not downloaded it before, you will need to register.
    After downloading, please put SMPLX_xxx.npz under load/smplx
 
-3. Download the init apose.obj and apose joints npy file from here.
+3. Download the so-smpl extra data for masking and retopology in [here](https://tamucs-my.sharepoint.com/:f:/g/personal/jionghao_tamu_edu/Ekeg21l-YJlIgHWBz5IDHW4BUHhuW2Iew8IbgRT43uh-MA?e=hcjQF6). The garmentnet pth is derived from [BCNet](https://github.com/jby1993/BCNet).
 
-4. We also need to borrow the extras data from [TADA](https://github.com/TingtingLiao/TADA), by downloading the TADA extra data here: https://github.com/TingtingLiao/TADA?tab=readme-ov-file#data.
+4. We also need to borrow the extras data from [TADA](https://github.com/TingtingLiao/TADA), by downloading the TADA extra data [here](https://github.com/TingtingLiao/TADA?tab=readme-ov-file#data).
 
    After downloading, put the remeshing files under smplx, and it should be smplx/remesh and smplx/init_body
 
@@ -161,4 +161,4 @@ This code is for non-commercial use only. Note that [threestudio](https://github
 
 Our implementation is heavily based on the amazing [threestudio](https://github.com/threestudio-project/threestudio), shout out to the contributors!
 
-We'd like to thank the authors of [TADA](https://tada.is.tue.mpg.de/), [DreamWaltz](https://idea-research.github.io/DreamWaltz/), [AvatarCLIP](https://hongfz16.github.io/projects/AvatarCLIP.html) and [TEXTure](https://texturepaper.github.io/TEXTurePaper/) for making their code public!
+We'd like to thank the authors of [TADA](https://tada.is.tue.mpg.de/), [DreamWaltz](https://idea-research.github.io/DreamWaltz/), [AvatarCLIP](https://hongfz16.github.io/projects/AvatarCLIP.html), [BCNet](https://github.com/jby1993/BCNet) and [TEXTure](https://texturepaper.github.io/TEXTurePaper/) for making their code public!
