@@ -1,4 +1,4 @@
-# SO-SMPL
+# SO-SMPL(ECCV 2024)
 Official Implementation of paper "Disentangled Clothed Avatar Generation from Text Descriptions"
 
 ![teaser](./assets/teaser.png)
