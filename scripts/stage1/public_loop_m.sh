@@ -4,15 +4,15 @@ exp_root_dir="outputs"
 folder_name="Stage1"
 
 prompts=(
-    "athletic Caucasian male, topless and wearing tight box shorts and barefoot, photorealistic, ultra-detailed, 8k uhd"
-    "athletic Black male, topless and wearing tight box shorts and barefoot, photorealistic, ultra-detailed, 8k uhd"
-    "athletic Asian male, topless and wearing tight box shorts and barefoot, photorealistic, ultra-detailed, 8k uhd"
+    "athletic Caucasian male, photorealistic, ultra-detailed, 8k uhd"
+    # "athletic Black male, photorealistic, ultra-detailed, 8k uhd"
+    # "athletic Asian male, photorealistic, ultra-detailed, 8k uhd"
 )
 
 tags=(
     "male_white"
-    "male_black"
-    "male_asian"
+    # "male_black"
+    # "male_asian"
 )
 
 if [ ${#prompts[@]} -ne ${#tags[@]} ]; then
@@ -24,7 +24,7 @@ for i in "${!prompts[@]}"; do
     (
     python3 launch.py --config configs/smplplus.yaml --train \
         --adjust_cameras \
-        --gpu 0 \
+        --gpu 1 \
         seed=1447 \
         exp_root_dir="${exp_root_dir}" \
         name="${folder_name}" \
@@ -38,13 +38,13 @@ for i in "${!prompts[@]}"; do
         system.geometry.gender="male" \
         trainer.max_steps=15000 \
         system.prompt_processor.prompt="${prompts[$i]}" \
-        system.prompt_processor.negative_prompt="accessories, shoes, socks, loose clothes, NSFW, genitalia, ugly"
+        system.prompt_processor.negative_prompt="NSFW, genitalia, ugly"
     )
 
     # export the mesh
     (
     python3 launch.py --config configs/smplplus.yaml --export \
-        --gpu 0 \
+        --gpu 1 \
         name="${folder_name}" \
         exp_root_dir="${exp_root_dir}" \
         tag="${tags[$i]}_meshexport" \
@@ -55,6 +55,6 @@ for i in "${!prompts[@]}"; do
         system.geometry.model_type="smplx" \
         system.geometry.gender="male" \
         system.prompt_processor.prompt="exporting" \
-        system.prompt_processor.negative_prompt="shirt, accessories, shoes, loose clothes, NSFW, genitalia, ugly"
+        system.prompt_processor.negative_prompt="NSFW, genitalia, ugly"
     )
 done

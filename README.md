@@ -41,12 +41,13 @@ Our pipeline has two stages. In Stage I, we generate a base human body model by 
 5. Install the smplx lib from [TADA](https://github.com/TingtingLiao/TADA) by:
 
    ```
-   git clone git@github.com:TingtingLiao/TADA.git
+   git clone https://github.com/TingtingLiao/TADA.git
    cd TADA
    cd smplx
    python setup.py install 
    ```
 
+6. Install cubvh from [cubvh](https://github.com/ashawkey/cubvh).
    
 
 ## Usage
